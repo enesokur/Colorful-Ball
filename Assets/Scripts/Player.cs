@@ -50,6 +50,7 @@ public class Player : MonoBehaviour
         }
         if(hit.transform.CompareTag("Friend")){
             CubeFriendExplode(hit.transform.gameObject);
+            _gameManager.CoinSpawn(hit.transform.position);
         }
     }
 
@@ -75,10 +76,10 @@ public class Player : MonoBehaviour
         Collider[] colliders = Physics.OverlapSphere(hitFriend.transform.position,0.5f);
         Destroy(breakableCube.transform.gameObject,3f);
         foreach(Collider collider in colliders){
-            Physics.IgnoreCollision(collider,this.GetComponent<Collider>());
+            //Physics.IgnoreCollision(collider,this.GetComponent<Collider>());
             Rigidbody rbfriend = collider.transform.gameObject.GetComponent<Rigidbody>();
             if(rbfriend != null){
-                rbfriend.AddExplosionForce(200f,breakableCube.transform.position,1f);
+                rbfriend.AddExplosionForce(100f,breakableCube.transform.position,1f);
             }
         }
         Destroy(hitFriend.transform.gameObject);

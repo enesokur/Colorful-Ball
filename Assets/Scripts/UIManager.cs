@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
@@ -14,6 +15,11 @@ public class UIManager : MonoBehaviour
     private GameObject[] _uiElements;
     [SerializeField]
     private GameObject _restartButton;
+
+    [SerializeField]
+    private Image _levelBar;
+    [SerializeField]
+    private GameObject _finishScreen;
     
 
     private void Start() {
@@ -65,5 +71,17 @@ public class UIManager : MonoBehaviour
 
     public void RestartGame(){
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void UpdateLevelBar(Vector3 playerPos,Vector3 finisPos){
+        _levelBar.fillAmount = (playerPos.z-4.85f) / finisPos.z;
+    }
+
+    public void ShowFinishScreen(){
+        _finishScreen.SetActive(true);
+    }
+
+    public void NextLevel(){
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex+1);
     }
 }

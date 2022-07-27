@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -14,6 +15,16 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     private GameObject[] _uiElements;
+    [SerializeField]
+    private GameObject _coin;
+    [SerializeField]
+    private TextMeshProUGUI _coinText;
+    [SerializeField]
+    private GameObject _player;
+    [SerializeField]
+    private GameObject _finishPosition;
+    public int gold;
+
     private void Start() {
         _uIManagerScript = GameObject.Find("Canvas").GetComponent<UIManager>();
     }
@@ -24,11 +35,14 @@ public class GameManager : MonoBehaviour
             gameStart = true;
             _uIManagerScript.CloseUI();
         }
+        if(gameStart == true){
+            _uIManagerScript.UpdateLevelBar(_player.transform.position,_finishPosition.transform.position);
+        }
     }
 
     private void DetectUIElements(){
         if(Input.touchCount > 0){
-            if(_uiElements[0].GetComponent<BoxCollider2D>().OverlapPoint(Input.GetTouch(0).position) || 
+           if(_uiElements[0].GetComponent<BoxCollider2D>().OverlapPoint(Input.GetTouch(0).position) || 
                 _uiElements[1].GetComponent<BoxCollider2D>().OverlapPoint(Input.GetTouch(0).position) ||
                 _uiElements[2].GetComponent<BoxCollider2D>().OverlapPoint(Input.GetTouch(0).position)){
                 _isCanvasElement = true;
@@ -37,5 +51,13 @@ public class GameManager : MonoBehaviour
                 _isCanvasElement = false;
             }
         }
+    }
+
+    public void CoinSpawn(Vector3 spawnPos){
+        var coinObject = Instantiate(_coin,spawnPos + new Vector3(0f,2.5f,0f),Quaternion.Euler(140f,0f,0f));
+        coinObject.GetComponent<Rigidbody>().AddForce(new Vector3(0f,200f,0f));
+        Destroy(coinObject,0.5f);
+        gold = (int.Parse(_coinText.text) + 5);
+        _coinText.text = gold.ToString(); 
     }
 }
