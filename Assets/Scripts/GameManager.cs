@@ -27,6 +27,8 @@ public class GameManager : MonoBehaviour
     public int gold;
     private IDictionary<int, int> numOfWhiteCubesEachScene;
     public int numOfBrokenWhiteCubes;
+    [SerializeField]
+    private GameObject _stars;
 
 
 
@@ -59,7 +61,7 @@ public class GameManager : MonoBehaviour
     }
 
     private void DetectUIElements(){
-        if(Input.touchCount > 0){
+        /*if(Input.touchCount > 0){
            if(_uiElements[0].GetComponent<BoxCollider2D>().OverlapPoint(Input.GetTouch(0).position) || 
                 _uiElements[1].GetComponent<BoxCollider2D>().OverlapPoint(Input.GetTouch(0).position) ||
                 _uiElements[2].GetComponent<BoxCollider2D>().OverlapPoint(Input.GetTouch(0).position)){
@@ -67,6 +69,15 @@ public class GameManager : MonoBehaviour
             }
             else{
                 _isCanvasElement = false;
+            }
+        }*/
+        if(Input.touchCount > 0){
+            Touch touch = Input.GetTouch(0);
+            if(touch.position.x > 2*Screen.width/8 && touch.position.x < 6*(Screen.width/8)){
+                _isCanvasElement = false;
+            }
+            else{
+                _isCanvasElement = true;
             }
         }
     }
@@ -80,15 +91,17 @@ public class GameManager : MonoBehaviour
     }
 
     public void LevelStarManager(){
+        starFxController starscript = _stars.GetComponent<starFxController>();
         int numOfWhiteCube = numOfWhiteCubesEachScene[SceneManager.GetActiveScene().buildIndex];
-        if(numOfBrokenWhiteCubes > 0.70*numOfWhiteCube){
-            Debug.Log("3 Yıldız");
+        if(numOfBrokenWhiteCubes > 0.6*numOfWhiteCube){
+            starscript.ea = 3;
         }
-        else if(numOfBrokenWhiteCubes > 0.55*numOfWhiteCube){
-            Debug.Log("2 yıldız");
+        else if(numOfBrokenWhiteCubes > 0.4*numOfWhiteCube){
+            starscript.ea = 2;
         }
         else{
-            Debug.Log("1 Yıldız");
+            starscript.ea = 1;
         }
+        starscript.enabled = true;    
     }
 }

@@ -6,15 +6,19 @@ public class CameraControl : MonoBehaviour
 {
     private Player _player;
     private GameManager _gameManager;
+    public GameObject Stars;
+    private Vector3 direction;
     private void Start() {
         _player = GameObject.Find("Player").GetComponent<Player>();
         _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        direction = Stars.transform.position - Camera.main.transform.position;
     }
 
     private void Update() {
         if(_gameManager.gameStart){
             this.transform.position += new Vector3(0f,0f,_player.forwardSpeed)*Time.deltaTime;
         }
+        FollowCamera();
     }
     IEnumerator CameraShakeRoutine(float duration,float magnitude){
         Vector3 originalPosition = this.transform.position;
@@ -30,5 +34,8 @@ public class CameraControl : MonoBehaviour
 
     public void StartCameraShakeRoutine(){
         StartCoroutine(CameraShakeRoutine(0.2f,0.6f));
+    }
+    private void FollowCamera(){
+        Stars.transform.position = Camera.main.transform.position + direction;
     }
 }

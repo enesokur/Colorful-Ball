@@ -17,10 +17,6 @@ public class starFxController : MonoBehaviour {
 		myStarFxController = this;
 	}
 
-	void Start () {
-		Reset ();
-	}
-
 	void Update () {
 		if (!isEnd) {
 			currentDelay -= Time.deltaTime;
