@@ -72,6 +72,7 @@ public class Player : MonoBehaviour
     }
 
     private void CubeFriendExplode(GameObject hitFriend){
+        _gameManager.numOfBrokenWhiteCubes++;
         var breakableCube =Instantiate(_breakableFriendObject,new Vector3(hitFriend.transform.position.x,0.216f,hitFriend.transform.position.z),Quaternion.identity);
         Collider[] colliders = Physics.OverlapSphere(hitFriend.transform.position,0.5f);
         Destroy(breakableCube.transform.gameObject,3f);

@@ -20,10 +20,12 @@ public class UIManager : MonoBehaviour
     private Image _levelBar;
     [SerializeField]
     private GameObject _finishScreen;
+    private GameManager _gameManagerScript;
     
 
     private void Start() {
         _settingsAnimator = GameObject.Find("SettingsLayout").GetComponent<Animator>();
+        _gameManagerScript = GameObject.Find("GameManager").GetComponent<GameManager>();
         if(PlayerPrefs.HasKey("audio") == false){
             PlayerPrefs.SetInt("audio",1);
         }
@@ -79,6 +81,7 @@ public class UIManager : MonoBehaviour
 
     public void ShowFinishScreen(){
         _finishScreen.SetActive(true);
+        _gameManagerScript.LevelStarManager();
     }
 
     public void NextLevel(){

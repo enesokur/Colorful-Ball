@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -24,9 +25,26 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private GameObject _finishPosition;
     public int gold;
+    private IDictionary<int, int> numOfWhiteCubesEachScene;
+    public int numOfBrokenWhiteCubes;
+
+
 
     private void Start() {
+        numOfBrokenWhiteCubes = 0;
         _uIManagerScript = GameObject.Find("Canvas").GetComponent<UIManager>();
+        numOfWhiteCubesEachScene = new Dictionary<int, int>(){
+            {0,61},
+            {1,111},
+            {2,54},
+            {3,88},
+            {4,93},
+            {5,56},
+            {6,67},
+            {7,64},
+            {8,23},
+            {9,44},
+        };
     }
 
     private void Update() {
@@ -59,5 +77,18 @@ public class GameManager : MonoBehaviour
         Destroy(coinObject,0.5f);
         gold = (int.Parse(_coinText.text) + 5);
         _coinText.text = gold.ToString(); 
+    }
+
+    public void LevelStarManager(){
+        int numOfWhiteCube = numOfWhiteCubesEachScene[SceneManager.GetActiveScene().buildIndex];
+        if(numOfBrokenWhiteCubes > 0.70*numOfWhiteCube){
+            Debug.Log("3 Yıldız");
+        }
+        else if(numOfBrokenWhiteCubes > 0.55*numOfWhiteCube){
+            Debug.Log("2 yıldız");
+        }
+        else{
+            Debug.Log("1 Yıldız");
+        }
     }
 }
