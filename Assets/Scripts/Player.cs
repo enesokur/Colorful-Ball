@@ -5,7 +5,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField]
-    [Range(1,10)]
+    [Range(0,10)]
     private float _speed;
     private Touch _touch;
     private CharacterController ch;
@@ -19,7 +19,12 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GameObject _breakableFriendObject;
     private UIManager _uiManagerScript;
+    [SerializeField]
+    private AudioClip _cubeCrumbleSound;
+    [SerializeField]
+    private AudioClip _playerCrumbleSound;
     private void Start() {
+
         ch = this.GetComponent<CharacterController>();
         _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         _uiManagerScript = GameObject.Find("Canvas").GetComponent<UIManager>();
@@ -33,7 +38,7 @@ public class Player : MonoBehaviour
             if(_gameManager.gameStart == true){
                 _touch = Input.GetTouch(0);
                 if(_touch.phase == TouchPhase.Moved){
-                    ch.Move(new Vector3(_touch.deltaPosition.x*_speed,0f,_touch.deltaPosition.y*_speed)*Time.deltaTime);
+                    ch.Move(new Vector3(_touch.deltaPosition.x*_speed,0f,_touch.deltaPosition.y*_speed/2)*Time.deltaTime);
                 }
             }
         }
@@ -55,6 +60,7 @@ public class Player : MonoBehaviour
     }
 
     private void PlayerExplode(){
+        AudioSource.PlayClipAtPoint(_playerCrumbleSound,this.transform.position + new Vector3(0f,10f,-10f));
         _gameManager.gameStart = false;
         _gameManager.gameEnded = true;
         _uiManagerScript.ShowRestartButton();
@@ -72,6 +78,7 @@ public class Player : MonoBehaviour
     }
 
     private void CubeFriendExplode(GameObject hitFriend){
+        AudioSource.PlayClipAtPoint(_cubeCrumbleSound,this.transform.position+new Vector3(0f,10f,-10f));
         _gameManager.numOfBrokenWhiteCubes++;
         var breakableCube =Instantiate(_breakableFriendObject,new Vector3(hitFriend.transform.position.x,0.216f,hitFriend.transform.position.z),Quaternion.identity);
         Collider[] colliders = Physics.OverlapSphere(hitFriend.transform.position,0.5f);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using EasyMobile;
 
 public class UIManager : MonoBehaviour
 {
@@ -21,7 +22,7 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private GameObject _finishScreen;
     private GameManager _gameManagerScript;
-    
+
 
     private void Start() {
         _settingsAnimator = GameObject.Find("SettingsLayout").GetComponent<Animator>();
@@ -32,7 +33,9 @@ public class UIManager : MonoBehaviour
         else if(PlayerPrefs.GetInt("audio") == 0){
             _redlineObject.SetActive(true);
             AudioListener.volume = 0f;
+            _soundButtonControl = 0;
         }
+        
     }
 
     public void SettingsButtonControl(){
@@ -72,6 +75,7 @@ public class UIManager : MonoBehaviour
     }
 
     public void RestartGame(){
+        Advertising.ShowInterstitialAd();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
@@ -85,6 +89,13 @@ public class UIManager : MonoBehaviour
     }
 
     public void NextLevel(){
+        Advertising.ShowInterstitialAd();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex+1);
     }
+
+    public void LoadMenu(){
+        SceneManager.LoadScene(0);
+    }
+
+    
 }

@@ -36,16 +36,16 @@ public class GameManager : MonoBehaviour
         numOfBrokenWhiteCubes = 0;
         _uIManagerScript = GameObject.Find("Canvas").GetComponent<UIManager>();
         numOfWhiteCubesEachScene = new Dictionary<int, int>(){
-            {0,61},
-            {1,111},
-            {2,54},
-            {3,88},
-            {4,93},
-            {5,56},
-            {6,67},
-            {7,64},
-            {8,23},
-            {9,44},
+            {1,61},
+            {2,111},
+            {3,54},
+            {4,88},
+            {5,93},
+            {6,56},
+            {7,67},
+            {8,64},
+            {9,23},
+            {10,44},
         };
     }
 
@@ -92,15 +92,19 @@ public class GameManager : MonoBehaviour
 
     public void LevelStarManager(){
         starFxController starscript = _stars.GetComponent<starFxController>();
-        int numOfWhiteCube = numOfWhiteCubesEachScene[SceneManager.GetActiveScene().buildIndex];
+        int sceneIndex = SceneManager.GetActiveScene().buildIndex;
+        int numOfWhiteCube = numOfWhiteCubesEachScene[sceneIndex];
         if(numOfBrokenWhiteCubes > 0.6*numOfWhiteCube){
             starscript.ea = 3;
+            PlayerPrefs.SetInt("level"+sceneIndex,3);
         }
         else if(numOfBrokenWhiteCubes > 0.4*numOfWhiteCube){
             starscript.ea = 2;
+            PlayerPrefs.SetInt("level"+sceneIndex,2);
         }
         else{
             starscript.ea = 1;
+            PlayerPrefs.SetInt("level"+sceneIndex,1);
         }
         starscript.enabled = true;    
     }

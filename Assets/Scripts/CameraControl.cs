@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class CameraControl : MonoBehaviour
 {
@@ -8,10 +9,13 @@ public class CameraControl : MonoBehaviour
     private GameManager _gameManager;
     public GameObject Stars;
     private Vector3 direction;
+
     private void Start() {
         _player = GameObject.Find("Player").GetComponent<Player>();
         _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         direction = Stars.transform.position - Camera.main.transform.position;
+        QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = 60;
     }
 
     private void Update() {
